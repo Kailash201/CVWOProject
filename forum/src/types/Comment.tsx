@@ -1,9 +1,10 @@
 import React from 'react';
 
 type Comment = {
-    body: string;
-    author: string;
-    timestamp: Date;
+    "desc": string;
+    "user": string;
+    "created_at": Date;
+    "id": number;
 };
 
 export default Comment;

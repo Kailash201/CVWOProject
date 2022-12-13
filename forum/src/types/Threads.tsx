@@ -1,11 +1,11 @@
 import React from 'react';
 
 type Thread = {
-    body: string;
-    Title: string;
-    User: string;
-    timestamp: Date;
-    id: number;
+    "desc": string;
+    "title": string;
+    "user": string;
+    "created_at": Date;
+    "id": number;
 };
 
 export default Thread;

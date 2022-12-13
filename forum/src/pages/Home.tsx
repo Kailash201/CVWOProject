@@ -1,5 +1,7 @@
-import BasicThreadList from '../components/BasicThreadList';
 import React from 'react';
+import { GetThreadlists } from '../components/ThreadList';
+
+
 
 const Home: React.FC = () => {
     return (
@@ -8,7 +10,7 @@ const Home: React.FC = () => {
                 {"Welcome to CVWO's sample react app! Here's a basic list of forum threads for you to experiment with."}
             </h3>
             <br />
-            <BasicThreadList />
+            <GetThreadlists />
         </>
     );
 };

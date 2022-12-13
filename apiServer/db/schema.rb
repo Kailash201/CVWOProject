@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_12_121121) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_13_130057) do
+  create_table "comments", force: :cascade do |t|
+    t.string "user"
+    t.text "desc"
+    t.integer "thread_list_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["thread_list_id"], name: "index_comments_on_thread_list_id"
+  end
+
   create_table "thread_lists", force: :cascade do |t|
     t.integer "id_sec"
     t.string "title"
@@ -24,4 +33,5 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_12_121121) do
     t.string "user"
   end
 
+  add_foreign_key "comments", "thread_lists"
 end

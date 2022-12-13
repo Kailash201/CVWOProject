@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   # root "articles#index"
   namespace 'api' do
     namespace 'v1' do
-      resources :threadlists
+      resources :threadlists do
+        resources :comments
+      end
     end
   end
 end
