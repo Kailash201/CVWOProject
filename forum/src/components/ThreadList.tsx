@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ThreadItem from './ThreadItem';
-import GetRequestJson from './GetRequestJson';
+import {GetRequestJson} from './GetRequestJson';
 import Thread from '../types/Threads';
 
 function GetThreadlists() {

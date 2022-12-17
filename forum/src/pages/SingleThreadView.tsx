@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import GetRequestJSon from "../components/GetRequestJson";
+import Header from "../components/Header";
 import ThreadItem from "../components/ThreadItem";
 import Thread from "../types/Threads";
 
@@ -25,7 +25,9 @@ const [threads, setthreads] = useState<Thread>();
     
 return(
     <div>
-    {threads && <ThreadItem thread={threads}></ThreadItem>}
+        <Header></Header>
+        <br></br> <br></br>
+        {threads && <ThreadItem thread={threads}></ThreadItem>}
     </div>
 );
 

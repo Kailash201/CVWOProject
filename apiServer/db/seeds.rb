@@ -6,15 +6,11 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-5.times do
+10.times do
     ThreadList.create({
         title: Faker::Book.title,
-        desc: Faker::Lorem.sentence,
-        id_sec: 0,
-        user: Faker::Book.title,
-        like: 0,
-        dislike: 0,
-        comments: 0
-        
+        desc: Faker::Lorem.paragraphs,
+        user: Faker::Internet.username,
+       
     })
     end

@@ -24,13 +24,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_13_130057) do
     t.integer "id_sec"
     t.string "title"
     t.text "desc"
+    t.string "user"
     t.integer "like"
     t.integer "dislike"
     t.integer "comments"
     t.datetime "time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "user"
   end
 
   add_foreign_key "comments", "thread_lists"
