@@ -14,7 +14,7 @@ import { Backdrop, Fade, Modal, TextField } from '@material-ui/core';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      backgroundColor: '#F76C6C',
+      backgroundColor: '#AC4425',
       minHeight: 40,
       flexGrow: 1
     },
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
       fontSize: 15,   
       height: 30,
       width: 120,
-      background: '#F8E9A1'
+      background: '#FFFBEB '
            
     },
     head: {

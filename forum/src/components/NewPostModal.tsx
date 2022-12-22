@@ -1,12 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import { Button, TextField } from '@material-ui/core';
 import { AddThread } from './GetRequestJson';
-import { redirect } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import Snackbar from '@material-ui/core/Snackbar';
+import { setTimeout } from 'timers';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -25,14 +25,15 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     form: {
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
+      
 
     },
     title: {
       fontSize: 15,   
       height: 30,
       width: 120,
-      background: '#F8E9A1'
+      background: '#FFFBEB'
            
     },
     buts: {
@@ -47,18 +48,23 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function Newpostmodal() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [openSb, setOpenSb] = useState(false);
   const [inTitle, setIntitle] = useState('');
   const [inBody, setInBody] = useState('');
-
+  const [posts, setPosts] = useState('');
+  const addurl: string = "http://localhost:3000/api/v1/threadlists/";
+    
   const handleChangeT = (event: any) => {
     setIntitle(event.target.value);
   }
   const handleChangeB = (event: any) => {
     setInBody(event.target.value);
   }
-
-  const submit = () => {
-    return redirect("/submit")
+  const handleClick = () => {
+    setIntitle("");
+    setInBody("");
+    setOpen(false);
+    setOpenSb(true);
   }
 
   return (
@@ -67,10 +73,7 @@ export default function Newpostmodal() {
         New Post
       </Button>
       <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          disableEscapeKeyDown={true}
-          
+          disableEscapeKeyDown={true}    
           className={classes.modal}
           open={open}
           onClose={(reason) => reason !== "backdropClick" ? setOpen(true) : setOpen(false)}
@@ -91,14 +94,31 @@ export default function Newpostmodal() {
                   rows={16} id="body" label="Your Content" variant="outlined" />
               </form>
               <div className={classes.buts}>
-                <Link to="/submit" state={[inTitle, inBody]} style = {{textDecoration: 'none'}}>
-                  <Button onClick={submit} variant='contained'>Submit</Button>
-                </Link>
+                
+                  <Button 
+                    variant='contained' 
+                    onClick={() => {AddThread(addurl, posts, setPosts, inTitle, inBody); handleClick();}}>
+                      Submit
+                  </Button>
+               
                 <Button onClick={() => setOpen(false)}>Cancel</Button>
               </div>
             </div>
           </Fade>
       </Modal>
+      <div className='alert'>
+          <Snackbar
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+            open={openSb}
+            autoHideDuration={2000}
+            onClose={() => {setOpenSb(false); window.location.reload();}}
+            message="Post Uploaded"
+            
+          />
+      </div>
     </div>
   );
 }

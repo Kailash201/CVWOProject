@@ -9,8 +9,7 @@ const Aa: React.FC = () => {
     const location = useLocation();
     const data: number = location.state;
     const url: string = "http://localhost:3000/api/v1/threadlists/" + data.toString();
-    const g = DeleteThread(url);
-    console.log(g);
+    
     return(
         <div>
             <h1>The thread has been deleted</h1>
