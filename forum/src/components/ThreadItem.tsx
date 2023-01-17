@@ -21,6 +21,7 @@ import { getReqAsync, DeleteThread, AddComment} from "./GetRequestJson";
 import CommentList from "./CommentList";
 import EditThread from "./EditThread";
 import ExpandView from "./ExpandView";
+import { useCookies } from 'react-cookie';
 
 
 
@@ -30,7 +31,7 @@ type Props = {
 }
 const useStyles = makeStyles({
     root: {
-      maxWidth: 345,
+      width: '100%',
       backgroundColor: '#FFFBEB',
       display: 'flex',
       flexDirection: 'column',
@@ -92,6 +93,7 @@ const ThreadItem: React.FC<Props> = ({thread}) => {
     // used for get request to get updated comments after opening modal
     const [comUp, setComUp] = useState<Thread[]>([]);
     const [openEdit, setEdit] = useState(false);
+    const [cookies, setCookie] = useCookies(['person']);
   
 
 
@@ -111,10 +113,8 @@ const ThreadItem: React.FC<Props> = ({thread}) => {
 return (
     <div id={thread['id'].toString()}>
         <Card className={classes.root}>
-            <CardActionArea 
-                component={Link} to="/" 
-                state ={thread["id"]} 
-                onClick={() => { getReqAsync(url, setComUp, comUp).then((a) => {setCommentList(a); setOpen(true);});            
+            <CardActionArea    
+                onClick={() => { getReqAsync(url, setComUp).then((a) => {setCommentList(a); setOpen(true);});            
                 }}>
                 <CardHeader 
                     subheader={ <Typography variant="h6"> {thread['title']} </Typography>} 
@@ -123,7 +123,6 @@ return (
                             </Typography>}
                     className={classes.header}>
                 </CardHeader>
-
                 <CardMedia></CardMedia>
 
                 <CardContent className={classes.body}>
@@ -132,6 +131,11 @@ return (
                     </Typography>
                 </CardContent>
             </CardActionArea>
+            <div id="tags">
+                <Button>he</Button>
+            </div>
+           
+            {cookies.person['id'] === thread['profile_id'] ?
             <div>
                 <Button onClick={() => {DeleteThread(delurl, setStatus, status); box?.remove()}}>
                     delete
@@ -140,6 +144,8 @@ return (
                     edit
                 </Button>
             </div>
+            : null
+            }   
         </Card>
         <div id='editModal'>
             {openEdit ? (<EditThread prev={openEdit} func={setEdit}></EditThread>) : null}

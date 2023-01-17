@@ -6,7 +6,7 @@ import Thread from '../types/Threads';
 function GetThreadlists() {
     const threads: Thread[] = GetRequestJson('http://localhost:3000/api/v1/threadlists', 'data')
     return (
-        <div className="MainList">
+        <div className="Main">
             <h5 className="card-header">Discussions</h5>
             <div className="card-body">
             

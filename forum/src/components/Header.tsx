@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -6,9 +6,10 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/core/Menu'
-import { Link } from 'react-router-dom';
+import { Link, redirect, useNavigate } from 'react-router-dom';
 import Newpostmodal from './NewPostModal';
 import { Backdrop, Fade, Modal, TextField } from '@material-ui/core';
+import { Cookies, useCookies } from 'react-cookie';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -36,7 +37,13 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function Header() {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies(['person']);
+
+  const handleClick = () => {
+    removeCookie('person');
+    return navigate("/");
+  }
 
   return (
     <div>
@@ -66,7 +73,12 @@ export default function Header() {
                   Search
               </Button>
             </Link>
-          </div>     
+          </div>  
+          <div className={classes.head}>
+            <Button variant="contained" className={classes.title} onClick={handleClick}>
+                Log out
+            </Button>
+          </div>       
         </Toolbar>
       </AppBar>
     </div>

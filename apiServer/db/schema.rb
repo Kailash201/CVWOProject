@@ -10,28 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_13_130057) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_27_120123) do
   create_table "comments", force: :cascade do |t|
     t.string "user"
     t.text "desc"
     t.integer "thread_list_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "profile_id"
     t.index ["thread_list_id"], name: "index_comments_on_thread_list_id"
   end
 
+  create_table "profiles", force: :cascade do |t|
+    t.string "user"
+    t.string "password"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "thread_lists", force: :cascade do |t|
-    t.integer "id_sec"
     t.string "title"
     t.text "desc"
     t.string "user"
     t.integer "like"
     t.integer "dislike"
     t.integer "comments"
-    t.datetime "time"
+    t.integer "profile_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["profile_id"], name: "index_thread_lists_on_profile_id"
   end
 
-  add_foreign_key "comments", "thread_lists"
+  add_foreign_key "thread_lists", "profiles"
 end

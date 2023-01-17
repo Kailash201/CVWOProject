@@ -6,6 +6,7 @@ type Thread = {
     "user": string;
     "created_at": Date;
     "id": number;
+    "profile_id": number;
 };
 
 export default Thread;

@@ -7,6 +7,8 @@ import { Button, TextField } from '@material-ui/core';
 import { AddThread } from './GetRequestJson';
 import Snackbar from '@material-ui/core/Snackbar';
 import { setTimeout } from 'timers';
+import { Cookies, useCookies } from 'react-cookie';
+
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -52,7 +54,8 @@ export default function Newpostmodal() {
   const [inTitle, setIntitle] = useState('');
   const [inBody, setInBody] = useState('');
   const [posts, setPosts] = useState('');
-  const addurl: string = "http://localhost:3000/api/v1/threadlists/";
+  const [cookies, setCookies] = useCookies(['person']);
+  const addurl: string = "http://localhost:3000/api/v1/profiles/" + cookies.person['id'].toString() + "/threadlists";
     
   const handleChangeT = (event: any) => {
     setIntitle(event.target.value);
@@ -97,7 +100,7 @@ export default function Newpostmodal() {
                 
                   <Button 
                     variant='contained' 
-                    onClick={() => {AddThread(addurl, posts, setPosts, inTitle, inBody); handleClick();}}>
+                    onClick={() => {AddThread(addurl, posts, setPosts, inTitle, inBody, cookies.person['name']); handleClick();}}>
                       Submit
                   </Button>
                

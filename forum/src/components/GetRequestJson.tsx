@@ -17,7 +17,7 @@ function GetRequestJson(link: string, tag: string) {
 
     return threads;
 }
-const getReqAsync = async (link: string, setStatus: Function, status: Thread[]) => {
+const getReqAsync = async (link: string, setStatus: Function) => {
     let data = null;
     try { 
         const response = await fetch(
@@ -36,7 +36,6 @@ const getReqAsync = async (link: string, setStatus: Function, status: Thread[]) 
       console.log(err);
     }
     finally {
-      console.log(status);
       return data['data'];
 
     }
@@ -69,7 +68,7 @@ const DeleteThread = async (link: string, setStatus: Function, status: string) =
 
 }
 
-const AddThread = async (link: string, status: string, setStatus: Function, title: string, body: string) => {
+const AddThread = async (link: string, status: string, setStatus: Function, title: string, body: string, user: string) => {
     
    
     try { 
@@ -78,7 +77,8 @@ const AddThread = async (link: string, status: string, setStatus: Function, titl
             method: 'POST',  headers: { 'Content-Type': 'application/json', Accept: 'application/json', }, 
             body: JSON.stringify({
             "desc": body,
-            "title": title
+            "title": title,
+            "user": user
         }) }
         );
         if (!response.ok) {
@@ -102,7 +102,6 @@ const AddThread = async (link: string, status: string, setStatus: Function, titl
 
 const AddComment = async (link: string, status: string, setStatus: Function, body: string) => {
    let data = null; 
-   
     try { 
             const response = await fetch(
             link, { 
@@ -136,8 +135,36 @@ const AddComment = async (link: string, status: string, setStatus: Function, bod
         
 }
 
+const AddProfile = async (link: string, body: string) => {
+  let data = null; 
+   try { 
+           const response = await fetch(
+           link, { 
+           method: 'POST',  headers: { 'Content-Type': 'application/json', Accept: 'application/json', }, 
+           body: JSON.stringify({
+           "user": body,
+       }) }
+       );
+       if (!response.ok) {
+           throw new Error(`Error! status: ${response.status}`);
+       }
+   
+       data = await response.json();
+       console.log("grj",data['message']);
+       console.log("grl",data['data']);
+       }
+       catch (err){
+           console.log(err);
+       }
+       finally {
+        return data['data'];               
+       }
+         
+       
+}
 
 
 
 
-export {GetRequestJson, DeleteThread, AddThread, AddComment, getReqAsync};
+
+export {GetRequestJson, DeleteThread, AddThread, AddComment, getReqAsync, AddProfile};

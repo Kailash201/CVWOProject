@@ -1,9 +1,13 @@
 .App {
     text-align: center;
+   
 }
 
-.main{
-    
+.Main{
+  margin: auto;
+  width: 80%;
+  border: 3px solid rgb(224, 158, 4);
+  padding: 10px;
 }
 
 .nav{

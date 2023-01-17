@@ -12,7 +12,9 @@ module Api
       end
 
       def create
-        thread = ThreadList.new(thread_params)
+        #thread = ThreadList.new(thread_params)
+        profile = Profile.find(params[:profile_id])
+        thread = profile.thread_list.create(thread_params)
 
         if thread.save
           render json: {status: 'SUCCESS', message:'Added Thread', data:thread}, status: :ok 

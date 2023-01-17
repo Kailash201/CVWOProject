@@ -14,8 +14,10 @@ module Api
             end
 
             def create
+                #profile = Profile.find(params[:profile_id])
                 thread = ThreadList.find(params[:threadlist_id])
                 comment = thread.comments.create(comment_params)
+
                 
                 if comment.save
                   render json: {status: 'SUCCESS', message:'Added Comment', data:comment}, status: :ok 
@@ -48,7 +50,7 @@ module Api
             private
 
             def comment_params
-                params.permit(:desc, :user)
+                params.permit(:desc, :user, :profile_id)
               end
         
 
