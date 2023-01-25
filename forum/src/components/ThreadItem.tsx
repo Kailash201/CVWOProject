@@ -22,6 +22,8 @@ import CommentList from "./CommentList";
 import EditThread from "./EditThread";
 import ExpandView from "./ExpandView";
 import { useCookies } from 'react-cookie';
+import TagList from "./TagList";
+import Comment from '../types/Comment';
 
 
 
@@ -44,7 +46,8 @@ const useStyles = makeStyles({
       
     },
     title:{
-        
+        backgroundColor: '#AB784E',
+ 
     },
     body:{
       textAlign: 'left'
@@ -78,43 +81,24 @@ const ThreadItem: React.FC<Props> = ({thread}) => {
     const [status, setStatus] = useState<string>("");
     // to open and close modal
     const [open, setOpen] = useState(false);
-    // get comment input
-    const [comment, setComment] = useState<string>('');
     // commenturl
     const url: string = 'http://localhost:3000/api/v1/threadlists/' + thread['id'].toString() + '/comments';
     // delete thread url
     const delurl: string = "http://localhost:3000/api/v1/threadlists/" + thread['id'].toString();
     // get comments for that thread
     //const comments: Thread[] = GetRequestJson(url, 'data');
-    // used to delete thread
-    const box = document.getElementById(thread['id'].toString());
     // update comments on the go
-    const [commentList, setCommentList] = useState<Thread[]>([]);
+    const [commentList, setCommentList] = useState<Comment[]>([]);
     // used for get request to get updated comments after opening modal
     const [comUp, setComUp] = useState<Thread[]>([]);
     const [openEdit, setEdit] = useState(false);
     const [cookies, setCookie] = useCookies(['person']);
   
-
-
-    // const handleChange = (event: any) => {
-    //     setComment(event.target.value);
-    // }
-    // const handleClick = () => {
-    //     AddComment(url, comment, setComment, comment).then((f) => 
-    //                                     { commentList.push(f);
-    //                                       setCommentList(commentList);
-    //                                       setComment('');
-    //                                       return f;
-    //                                     }); 
-
-    // }
-    
 return (
     <div id={thread['id'].toString()}>
         <Card className={classes.root}>
             <CardActionArea    
-                onClick={() => { getReqAsync(url, setComUp).then((a) => {setCommentList(a); setOpen(true);});            
+                onClick={() => { getReqAsync(url).then((a) => {setCommentList(a); setOpen(true);});            
                 }}>
                 <CardHeader 
                     subheader={ <Typography variant="h6"> {thread['title']} </Typography>} 
@@ -132,12 +116,15 @@ return (
                 </CardContent>
             </CardActionArea>
             <div id="tags">
-                <Button>he</Button>
+                <TagList id={thread['id']}></TagList>
             </div>
-           
-            {cookies.person['id'] === thread['profile_id'] ?
-            <div>
-                <Button onClick={() => {DeleteThread(delurl, setStatus, status); box?.remove()}}>
+        </Card>{
+        cookies.person['id'] === thread['profile_id'] ?
+            <div className={classes.title}>
+                <Button onClick={() => {
+                    DeleteThread(delurl); 
+                    const box = document.getElementById(thread['id'].toString());
+                    box?.remove();}}>
                     delete
                 </Button>
                 <Button onClick={() => setEdit(true)}>
@@ -146,9 +133,10 @@ return (
             </div>
             : null
             }   
-        </Card>
         <div id='editModal'>
-            {openEdit ? (<EditThread prev={openEdit} func={setEdit}></EditThread>) : null}
+            {openEdit ? (<EditThread prev={openEdit} func={setEdit} 
+                                    title={thread['title']} body={thread['desc']} id={thread['id']}>
+                                    </EditThread>) : null}
         </div>
         <div id='viewpost'>
             {open ? (<ExpandView comfunc={setCommentList} comlist={commentList} thread={thread} prev={open} func={setOpen}></ExpandView>) : <p></p>}

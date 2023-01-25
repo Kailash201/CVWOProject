@@ -1,11 +1,10 @@
 import React from 'react';
 
-type Comment = {
-    "desc": string;
-    "user": string;
+type Tag = {
+    "name": string;
     "created_at": Date;
     "id": number;
     "thread_list_id": number;
 };
 
-export default Comment;
+export default Tag;

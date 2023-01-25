@@ -1,4 +1,4 @@
-import { Button } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import React, { useState } from "react";
 import { Navigate, redirect, useNavigate } from "react-router-dom";
@@ -9,24 +9,31 @@ import {useCookies} from 'react-cookie';
 type Props = {
     setAuth: Function;
 }
+const useStyles = makeStyles({
+    tf: {
+        width: '100%',
+        color: "#B67233",
+        fontSize: "110px"
+    },
+    resize: {
+        
+    }
+
+  });
 
 const SignIn: React.FC<Props> = ({setAuth}) => {
     const [inUser, setInUser] = useState('');
-    const [inPw, setInPW] = useState('');
-    const [as, sasc] = useState('');
     const navigate = useNavigate();
     const [cookies, setCookie] = useCookies(['person']);
-    
+    const classes = useStyles(); 
 
     const handleChangeU = (event: any) => {
         setInUser(event.target.value);
       }
-    const handleChangeP = (event: any) => {
-        setInPW(event.target.value);
-      }
+
     const login = () => {
         const url: string = 'http://localhost:3000/api/v1/profiles/';
-        getReqAsync(url, sasc).then((a: Profile[]) => {
+        getReqAsync(url).then((a: Profile[]) => {
             
             a.some( (tmp) => {
                 if (tmp['user'] === inUser) {  
@@ -46,7 +53,7 @@ const SignIn: React.FC<Props> = ({setAuth}) => {
     }
     const register = () => {
         const url: string = 'http://localhost:3000/api/v1/profiles/';
-        getReqAsync(url, sasc).then((a: Profile[]) => {
+        getReqAsync(url).then((a: Profile[]) => {
             
             const tmp: boolean = a.some( (tmp) => tmp['user'] === inUser
                             ? true : false)
@@ -63,33 +70,38 @@ const SignIn: React.FC<Props> = ({setAuth}) => {
         );
 
     }
-
-
     
     return (
-        <div>
-            <form id='sign' noValidate autoComplete="off">
+        <div className="sign">
+            <form className="form" id='sign' noValidate autoComplete="off">
                 <TextField 
-                    value={inUser} onChange={handleChangeU} id="username" label="username" />
-                <br></br>
-                <TextField  
-                    value={inPw} onChange={handleChangeP}
-                    id="pw" label="password"  />
+                    value={inUser} 
+                    onChange={handleChangeU} id="username" label="username" 
+                    InputProps={{
+                        classes: {
+                          input: classes.tf,
+                        },
+                      }}
+                    />
+            
                 <br></br> <br></br>
-                <Button variant="contained" onClick={login}>
+                <Button style={{background:"#B67233"}} variant="contained" onClick={login}>
                     Login
                 </Button>
             </form>
                 <br></br> <br></br>
-            <form id='register' noValidate autoComplete="off">
+            <form className="form"id='register' noValidate autoComplete="off">
                 <TextField 
-                    value={inUser} onChange={handleChangeU} id="username" label="username" />
-                <br></br>
-                <TextField  
-                    value={inPw} onChange={handleChangeP}
-                    id="pw" label="password"  />
+                    value={inUser} 
+                    onChange={handleChangeU} id="username" label="username" 
+                    InputProps={{
+                        classes: {
+                          input: classes.tf,
+                        },
+                      }}
+                    />   
                 <br></br> <br></br>
-                <Button variant="contained" onClick={register}>
+                <Button style={{background:"#B67233"}} variant="contained" onClick={register}>
                     register
                 </Button>
             </form>

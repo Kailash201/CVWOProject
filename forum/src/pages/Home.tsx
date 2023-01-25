@@ -11,7 +11,7 @@ const Home: React.FC = () => {
         <div className='main'>
             <Header></Header>
             <h3 >
-                {"Welcome to CVWO's sample react app! Here's a basic list of forum threads for you to experiment with."}
+                {"CVWO's forum"}
             </h3>
             <br />
             <GetThreadlists />

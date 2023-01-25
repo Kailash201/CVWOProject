@@ -17,7 +17,7 @@ function GetRequestJson(link: string, tag: string) {
 
     return threads;
 }
-const getReqAsync = async (link: string, setStatus: Function) => {
+const getReqAsync = async (link: string) => {
     let data = null;
     try { 
         const response = await fetch(
@@ -29,7 +29,6 @@ const getReqAsync = async (link: string, setStatus: Function) => {
       }
 
       data = await response.json();
-      setStatus(data['message']);
 
     }
     catch (err){
@@ -42,7 +41,7 @@ const getReqAsync = async (link: string, setStatus: Function) => {
 
 }
 
-const DeleteThread = async (link: string, setStatus: Function, status: string) => {
+const DeleteThread = async (link: string) => {
     let data = null;
     try { 
         const response = await fetch(
@@ -54,60 +53,28 @@ const DeleteThread = async (link: string, setStatus: Function, status: string) =
       }
 
       data = await response.json();
-      setStatus(data['message']);
 
     }
     catch (err){
       console.log(err);
     }
     finally {
-      console.log(status);
       return data['data'];
 
     }
 
 }
 
-const AddThread = async (link: string, status: string, setStatus: Function, title: string, body: string, user: string) => {
-    
-   
+const AddThread = async (link: string, title: string, body: string, user: string) => {
+  let data = null; 
     try { 
-            const response = await fetch(
-            link, { 
-            method: 'POST',  headers: { 'Content-Type': 'application/json', Accept: 'application/json', }, 
-            body: JSON.stringify({
-            "desc": body,
-            "title": title,
-            "user": user
-        }) }
-        );
-        if (!response.ok) {
-            throw new Error(`Error! status: ${response.status}`);
-        }
-    
-        const data = await response.json();
-        setStatus(data['message']);
-
-        }
-        catch (err){
-            console.log(err);
-        }
-        finally {
-        console.log(status);
-        
-        }
-          
-        
-}
-
-const AddComment = async (link: string, status: string, setStatus: Function, body: string) => {
-   let data = null; 
-    try { 
-            const response = await fetch(
-            link, { 
-            method: 'POST',  headers: { 'Content-Type': 'application/json', Accept: 'application/json', }, 
-            body: JSON.stringify({
-            "desc": body,
+        const response = await fetch(
+        link, { 
+        method: 'POST',  headers: { 'Content-Type': 'application/json', Accept: 'application/json', }, 
+        body: JSON.stringify({
+        "desc": body,
+        "title": title,
+        "user": user
         }) }
         );
         if (!response.ok) {
@@ -115,19 +82,95 @@ const AddComment = async (link: string, status: string, setStatus: Function, bod
         }
     
         data = await response.json();
-        console.log("grj",data['message']);
-        console.log("grl",data['data']);
-       
+        }
+    catch (err){
+        console.log(err);
+    }
+    finally {
+    return data['data'];
+    
+    }
+          
         
+}
+
+const ChangeThread = async (link: string, title: string, body: string) => {
+  let data = null; 
+    try { 
+        const response = await fetch(
+        link, { 
+        method: 'PUT',  headers: { 'Content-Type': 'application/json', Accept: 'application/json', }, 
+        body: JSON.stringify({
+        "desc": body,
+        "title": title,
+        }) }
+        );
+        if (!response.ok) {
+            throw new Error(`Error! status: ${response.status}`);
+        }
+    
+        data = await response.json();
+        }
+    catch (err){
+        console.log(err);
+    }
+    finally {
+    return data['data'];
+    
+    }
+          
+        
+}
+
+const ChangeComment = async (link: string, body: string) => {
+  let data = null; 
+    try { 
+        const response = await fetch(
+        link, { 
+        method: 'PUT',  headers: { 'Content-Type': 'application/json', Accept: 'application/json', }, 
+        body: JSON.stringify({
+        "desc": body,
+        }) }
+        );
+        if (!response.ok) {
+            throw new Error(`Error! status: ${response.status}`);
+        }
+    
+        data = await response.json();
+        }
+    catch (err){
+        console.log(err);
+    }
+    finally {
+    return data['data'];
+    
+    }
+          
+        
+}
+
+const AddComment = async (link: string, body: string, user: string) => {
+   let data = null; 
+    try { 
+            const response = await fetch(
+            link, { 
+            method: 'POST',  headers: { 'Content-Type': 'application/json', Accept: 'application/json', }, 
+            body: JSON.stringify({
+            "desc": body,
+            "user": user
+        }) }
+        );
+        if (!response.ok) {
+            throw new Error(`Error! status: ${response.status}`);
+        }
+    
+        data = await response.json();
 
         }
         catch (err){
             console.log(err);
         }
         finally {
-            console.log(status);
-            //setId(data['data'])
-
             return data['data'];            
         
         }
@@ -138,27 +181,50 @@ const AddComment = async (link: string, status: string, setStatus: Function, bod
 const AddProfile = async (link: string, body: string) => {
   let data = null; 
    try { 
-           const response = await fetch(
-           link, { 
-           method: 'POST',  headers: { 'Content-Type': 'application/json', Accept: 'application/json', }, 
-           body: JSON.stringify({
-           "user": body,
-       }) }
-       );
-       if (!response.ok) {
-           throw new Error(`Error! status: ${response.status}`);
-       }
-   
-       data = await response.json();
-       console.log("grj",data['message']);
-       console.log("grl",data['data']);
-       }
-       catch (err){
-           console.log(err);
-       }
-       finally {
-        return data['data'];               
-       }
+      const response = await fetch(
+      link, { 
+      method: 'POST',  headers: { 'Content-Type': 'application/json', Accept: 'application/json', }, 
+      body: JSON.stringify({
+      "user": body,
+      }) }
+      );
+      if (!response.ok) {
+          throw new Error(`Error! status: ${response.status}`);
+      }
+      data = await response.json();
+
+      }
+    catch (err){
+      console.log(err);
+    }
+    finally {
+      return data['data'];               
+    }
+  }
+
+const AddTag = async (link: string, body: string) => {
+  let data = null; 
+    try { 
+        const response = await fetch(
+        link, { 
+        method: 'POST',  headers: { 'Content-Type': 'application/json', Accept: 'application/json', }, 
+        body: JSON.stringify({
+        "name": body,
+        }) }
+        );
+        if (!response.ok) {
+            throw new Error(`Error! status: ${response.status}`);
+        }
+        data = await response.json();
+        console.log("tag",data['message']);
+        console.log("tag",data['data']);
+        }
+    catch (err){
+        console.log(err);
+    }
+    finally {
+    return data['data'];               
+    }
          
        
 }
@@ -167,4 +233,4 @@ const AddProfile = async (link: string, body: string) => {
 
 
 
-export {GetRequestJson, DeleteThread, AddThread, AddComment, getReqAsync, AddProfile};
+export {GetRequestJson, DeleteThread, AddThread, AddComment, getReqAsync, AddProfile, AddTag, ChangeThread, ChangeComment};

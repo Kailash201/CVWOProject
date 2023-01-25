@@ -4,47 +4,36 @@ import Fade from "@material-ui/core/Fade";
 import Modal from "@material-ui/core/Modal";
 import TextField from "@material-ui/core/TextField";
 import React, { useState } from "react";
+import { useCookies } from "react-cookie";
 import Thread from "../types/Threads";
 import CommentList from "./CommentList";
 import { AddComment } from "./GetRequestJson";
+import Comment from '../types/Comment';
 
 const useStyles = makeStyles({
-    root: {
-      maxWidth: 345,
-      backgroundColor: '#FFFBEB',
-      display: 'flex',
-      flexDirection: 'column',
-      
-    },
-    header: {
-      backgroundColor: '#FFFBEB',
-      maxHeight: 20,
-      textAlign: 'left'
-      
-    },
-    title:{
-        
-    },
-    body:{
-      textAlign: 'left'
-    },
+ 
+ 
     modal: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        
       },
     paper: {
         diplay: 'flex',
-        border: '2px solid #000',
+        border: '5px solid #623412',
         maxHeight: '90%',
         minHeight: '90%',
-        minWidth: '90%',
-        maxWidth: '90%',
+        minWidth: '85%',
+        maxWidth: '85%',
         backgroundColor: '#FFF2C2',
         overflowY: 'auto',
+        paddingLeft: "2%",
+        paddingRight: "2%"
       },
     comment: {
-        width: '100%'
+        width: '100%',
+       
     }
 
   });
@@ -53,7 +42,7 @@ type Props = {
     thread: Thread;
     prev: boolean;
     func: Function;
-    comlist: Thread[];
+    comlist: Comment[];
     comfunc: Function;
 }
 
@@ -62,13 +51,14 @@ const ExpandView: React.FC<Props> = ({thread, prev, func, comlist, comfunc}) => 
     const classes = useStyles();
     const url: string = 'http://localhost:3000/api/v1/threadlists/' + thread['id'].toString() + '/comments';
     const [comment, setComment] = useState<string>('');
-    const [commentList, setCommentList] = useState<Thread[]>([]);
+    const [cookies, setCookies] = useCookies(['person']);
+    //const [commentList, setCommentList] = useState<Thread[]>([]);
     
     const handleChange = (event: any) => {
         setComment(event.target.value);
     }
     const handleClick = () => {
-        AddComment(url, comment, setComment, comment).then((f) => 
+        AddComment(url, comment, cookies.person['name']).then((f) => 
                                         { comlist.push(f);
                                           comfunc(comlist);
                                           setComment('');
@@ -90,7 +80,10 @@ return (
         >
           <Fade in={prev}>
             <div className={classes.paper} >
-                <h2>{thread['title']}</h2>
+               <div className="cancel">
+                  <h2>{thread['title']}</h2>
+                  <Button className="cross" onClick={() => func(false)}>X</Button>
+                </div>
                 <p>{thread['desc']}</p>
                 <div>
                     <TextField 
@@ -108,17 +101,16 @@ return (
                     onClick={handleClick}>
                     sent
                 </Button>
-                <div >
-                <div>
-                    {comlist.map(comment => { console.log(comment)
-                            return <CommentList 
-                             cc={comment} 
-                             id={comment['id'].toString()} 
-                             tId={thread['id'].toString()} 
-                             >
-                           </CommentList>})}
-                </div>
-                    <Button style={{marginTop: '100%'}} onClick={() => func(false)}>Cancel</Button>
+                <div style={{maxHeight: 40}}>
+                  <div >
+                      {comlist.map(comment => { 
+                              return <CommentList 
+                              cc={comment} 
+                              id={comment['id'].toString()} 
+                              tId={thread['id'].toString()} 
+                              >
+                            </CommentList>})}
+                  </div>
                 </div>
 
             </div>

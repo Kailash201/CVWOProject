@@ -22,3 +22,56 @@ li {
 ul {
     padding-inline-start: unset;
 }
+.link {
+    text-decoration: none;
+    color: black;
+
+}
+.cancel {
+
+    display: flex;  
+    justify-content: space-between;  
+    
+      
+}
+.com {
+    display: flex;  
+    justify-content: center;  
+    padding-bottom: 5%;
+}
+.comd {
+     
+    justify-content: left;  
+    min-height: max-content;
+    word-wrap: break-word;
+}
+.header {
+    font-size: 15px;
+    padding-left: 15px;
+    color: brown;
+    
+}
+.but {
+    display: flex;  
+    justify-content: space-evenly; 
+
+}
+.modal{
+    display: 'flex';
+    align-items: 'center';
+    justify-content: 'center';
+  }
+.form{
+
+    padding-top: 8%;
+    padding-left: 10px;
+    padding-right: 10px;
+    
+}
+.sign{
+    
+    align-items: 'center';
+    justify-content: 'center';
+    
+  
+}

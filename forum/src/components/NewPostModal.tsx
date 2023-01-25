@@ -1,13 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useState } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import { Button, TextField } from '@material-ui/core';
-import { AddThread } from './GetRequestJson';
+import { AddTag, AddThread } from './GetRequestJson';
 import Snackbar from '@material-ui/core/Snackbar';
-import { setTimeout } from 'timers';
 import { Cookies, useCookies } from 'react-cookie';
+import MultipleSelect from './ChipTag';
+import Thread from '../types/Threads';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -18,9 +19,8 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'center',
     },
     paper: {
-      backgroundColor: theme.palette.background.paper,
+      backgroundColor: '#FFF2C2',
       border: '2px solid #000',
-      boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
       minHeight: 500,
       minWidth: 500
@@ -43,7 +43,10 @@ const useStyles = makeStyles((theme: Theme) =>
       marginTop: 30,
       justifyContent: 'space-evenly',
       flexGrow: 1
-    }
+    },
+    sb:{
+      background:"#B67233"
+  }
   }),
 );
 
@@ -53,8 +56,11 @@ export default function Newpostmodal() {
   const [openSb, setOpenSb] = useState(false);
   const [inTitle, setIntitle] = useState('');
   const [inBody, setInBody] = useState('');
-  const [posts, setPosts] = useState('');
   const [cookies, setCookies] = useCookies(['person']);
+  const [tags, setTags] = useState<string[]>([]);
+
+
+
   const addurl: string = "http://localhost:3000/api/v1/profiles/" + cookies.person['id'].toString() + "/threadlists";
     
   const handleChangeT = (event: any) => {
@@ -63,12 +69,17 @@ export default function Newpostmodal() {
   const handleChangeB = (event: any) => {
     setInBody(event.target.value);
   }
-  const handleClick = () => {
+  const handleClick = (res: Thread) => {
     setIntitle("");
     setInBody("");
     setOpen(false);
     setOpenSb(true);
+    const url: string = "http://localhost:3000/api/v1/threadlists/" + res['id'] + "/tags";
+        for(let i = 0; i < tags.length; i++){
+            AddTag(url, tags[i]);
+        }
   }
+  
 
   return (
     <div>
@@ -95,15 +106,16 @@ export default function Newpostmodal() {
                 <TextField  
                   multiline value={inBody} onChange={handleChangeB}
                   rows={16} id="body" label="Your Content" variant="outlined" />
+                <MultipleSelect listTags={tags} setTags={setTags}></MultipleSelect>
               </form>
               <div className={classes.buts}>
-                
                   <Button 
                     variant='contained' 
-                    onClick={() => {AddThread(addurl, posts, setPosts, inTitle, inBody, cookies.person['name']); handleClick();}}>
+                    className={classes.sb}
+                    onClick={() => {AddThread(addurl, inTitle, inBody, cookies.person['name']).then(res => {handleClick(res);
+                                                                                                                        }); }}>
                       Submit
                   </Button>
-               
                 <Button onClick={() => setOpen(false)}>Cancel</Button>
               </div>
             </div>
@@ -117,7 +129,7 @@ export default function Newpostmodal() {
             }}
             open={openSb}
             autoHideDuration={2000}
-            onClose={() => {setOpenSb(false); window.location.reload();}}
+            onClose={() => {setOpenSb(false); window.location.reload()}}
             message="Post Uploaded"
             
           />

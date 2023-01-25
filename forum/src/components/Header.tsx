@@ -10,7 +10,9 @@ import { Link, redirect, useNavigate } from 'react-router-dom';
 import Newpostmodal from './NewPostModal';
 import { Backdrop, Fade, Modal, TextField } from '@material-ui/core';
 import { Cookies, useCookies } from 'react-cookie';
-
+import { GetRequestJson } from './GetRequestJson';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -40,24 +42,45 @@ export default function Header() {
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies(['person']);
 
+  const url: string = 'http://localhost:3000/api/v1/maintags/';
+  const tags = GetRequestJson(url, "data");
+  let tagName: string[] = [];
+  let n: number = 0;
+  tags.map(tag => {tagName[n] = tag['name']; n++;});
+
   const handleClick = () => {
     removeCookie('person');
     return navigate("/");
   }
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleClickOne = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleSearch = (name: string) => {
+    console.log(name);
+  }
+
 
   return (
     <div>
       <AppBar position='static'>
         <Toolbar className={classes.root}>
           <div className={classes.head}>
-            <Link to="/" className={classes.but}>
+            <Link to="/home" className={classes.but}>
               <Button variant="contained" className={classes.title} >
                   Home
               </Button>
             </Link>
           </div>
           <div className={classes.head}>
-            <Link to="/" className={classes.but}>
+            <Link to="/profile" className={classes.but}>
               <Button variant="contained" className={classes.title} >
                   Profile
               </Button>
@@ -68,11 +91,30 @@ export default function Header() {
           </div>
 
           <div className={classes.head}>
-           <Link to="/" className={classes.but}>
-              <Button variant="contained" className={classes.title} >
-                  Search
-              </Button>
+          
+            <Button variant="contained" 
+                    className={classes.title} 
+                    aria-controls="simple-menu" 
+                    aria-haspopup="true" 
+                    onClick={handleClickOne}>
+                Search
+            </Button>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+            {tagName.map((name) => (
+            <Link to="/search" state={{tagName: name}} className="link">
+              <MenuItem onClick={() => handleSearch(name)}>
+                {name}
+              </MenuItem>
             </Link>
+            ))}
+            </Menu> 
+            
           </div>  
           <div className={classes.head}>
             <Button variant="contained" className={classes.title} onClick={handleClick}>
