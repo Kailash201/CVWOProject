@@ -22,6 +22,12 @@ module Api
 
             end
 
+            def destroy
+                profile = Profile.find(params[:id]).destroy
+                render json: {status: 'SUCCESS', message:'deleted User', data:profile}, status: :ok 
+        
+            end
+
             private 
 
             def profile_params
