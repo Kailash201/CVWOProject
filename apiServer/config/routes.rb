@@ -9,12 +9,17 @@ Rails.application.routes.draw do
         resources :threadlists 
       end
       resources :profiles
-      
+      resources :maintags
+      resources :tags
+
       resources :threadlists do
         resources :comments
       end
       resources :profiles do
         resources :comments
+      end
+      resources :threadlists do
+        resources :tags
       end
     end
   end

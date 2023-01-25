@@ -2,22 +2,22 @@ module Api
     module V1
         class ProfilesController < ApplicationController
             def index
-                threadlists = Profile.all
-                render json: {status: 'SUCCESS', message:'Get Profiles', data:threadlists}, status: :ok
+                profiles = Profile.all
+                render json: {status: 'SUCCESS', message:'Get Profiles', data:profiles}, status: :ok
             end
 
             def show
-                thread = ThreadList.find(params[:id])
-                render json: {status: 'SUCCESS', message:'Single profile', data:thread}, status: :ok 
+                profile = Profile.find(params[:id])
+                render json: {status: 'SUCCESS', message:'Single profile', data:profile}, status: :ok 
             end
 
             def create
-                thread = Profile.new(profile_params)
+                profile = Profile.new(profile_params)
 
-                if thread.save
-                render json: {status: 'SUCCESS', message:'Added User', data:thread}, status: :ok 
+                if profile.save
+                render json: {status: 'SUCCESS', message:'Added User', data:profile}, status: :ok 
                 else
-                render json: {status: 'ERROR', message:'User not added', data:thread.errors}, status: :unprocessable_entity
+                render json: {status: 'ERROR', message:'User not added', data:profile.errors}, status: :unprocessable_entity
                 end
 
             end

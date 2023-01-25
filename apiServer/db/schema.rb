@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_27_120123) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_21_144127) do
   create_table "comments", force: :cascade do |t|
     t.string "user"
     t.text "desc"
@@ -21,11 +21,25 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_27_120123) do
     t.index ["thread_list_id"], name: "index_comments_on_thread_list_id"
   end
 
+  create_table "maintags", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "profiles", force: :cascade do |t|
     t.string "user"
     t.string "password"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
+    t.integer "thread_list_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["thread_list_id"], name: "index_tags_on_thread_list_id"
   end
 
   create_table "thread_lists", force: :cascade do |t|
@@ -41,5 +55,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_27_120123) do
     t.index ["profile_id"], name: "index_thread_lists_on_profile_id"
   end
 
+  add_foreign_key "tags", "thread_lists"
   add_foreign_key "thread_lists", "profiles"
 end
